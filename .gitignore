@@ -10,7 +10,7 @@
 *.userosscache
 *.sln.docstates
 authfile.json
-
+azureConfig.json
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
