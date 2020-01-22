@@ -7,6 +7,7 @@ using System.Linq;
 
 using Newtonsoft.Json.Linq;
 using Microsoft.Azure.Cosmos.Table;
+
 namespace TableStorage
 {
     class Program
@@ -127,12 +128,13 @@ namespace TableStorage
             var batchTasks = new List<Task<TableBatchResult>>();
 
             var count = 1;
-            for (var i = 0; i < items.Count; i += 100)
+            var maxParallel = 100; // 100 is max
+            for (var i = 0; i < items.Count; i += maxParallel)
             {
                 taskCount++;
-                var partitionkey = "" + i + 100;
+                var partitionkey = "" + i + maxParallel;
                 var batchItems = items.Skip(i)
-                                         .Take(100)
+                                         .Take(maxParallel)
                                          .ToList();
 
                 var batch = new TableBatchOperation();
@@ -148,7 +150,7 @@ namespace TableStorage
 
                 if (taskCount >= taskThreshold)
                 {
-                    Task.WhenAll(batchTasks);
+                    await Task.WhenAll(batchTasks);
                     Console.WriteLine("Finished batch " + count + " by: " + stopwatch.Elapsed.ToString());
                     count++;
                     taskCount = 0;
@@ -156,7 +158,7 @@ namespace TableStorage
             }
             //Console.WriteLine("Finished by: " + stopwatch.Elapsed.ToString());
             
-            Task.WhenAll(batchTasks);
+            //Task.WhenAll(batchTasks);
             
             //Console.WriteLine("Finished all by: " + stopwatch.Elapsed.ToString());
             stopwatch.Stop();
