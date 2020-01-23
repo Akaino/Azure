@@ -28,3 +28,7 @@ If such error occurs please make sure you're deploying the `publish` directory o
 
 This can be changed in `.vscode\settings.json`.
 Change `"appService.deploySubpath": "bin\\Release"` to `"appService.deploySubpath": "bin\\Release\\netcoreapp3.1\\publish"`.
+
+
+###### Disclaimer
+I'm not too happy about the publishing options given by this extension. I'd strongly recommend using Visual Studio.
