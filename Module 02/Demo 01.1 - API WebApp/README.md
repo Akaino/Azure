@@ -7,4 +7,6 @@
 
 This creates a new sample web app providing a weather forcast API.
 
+Hit `F5` (compile and debug)
+
 `GET` `https://localhost:5001/WeatherForecast` to retrieve information
