@@ -12,6 +12,6 @@ There are different patterns for different use-cases. There will be a very simpl
 The following patterns will be treated:
 - Function Chaining
 - Fan-in/fan-out
-- <a href="">Async HTTP</a>
+- <a href="https://github.com/adnkai/Azure/tree/master/AZ-203/Module%2002/Demo%2005%20-%20Durable%20Functions/Async%20HTTP">Async HTTP</a>
 - User interaction
 - Aggregator (Stateful entities)
