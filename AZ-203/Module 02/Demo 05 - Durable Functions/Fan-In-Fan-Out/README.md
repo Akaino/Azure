@@ -1,4 +1,4 @@
-# Fan-In Fan-Out Patter
+# Fan-In Fan-Out Pattern
 ###### Prerequisites (Not required if fetched from repo)
 - Press `F1` and create a new `Function Project`
   - Choose:
