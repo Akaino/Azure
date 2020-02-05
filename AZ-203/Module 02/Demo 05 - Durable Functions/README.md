@@ -8,3 +8,10 @@ That being said, what if we need to presume state? Correct! That's where `Durabl
 With `Durable Functions` you're able to provide stateful logic in a serverless environment.
 
 There are different patterns for different use-cases. There will be a very simple  example for each of these patterns in this repository.
+
+The following patterns will be treated:
+- Function Chaining
+- Fan-in/fan-out
+- <a href="">Async HTTP</a>
+- User interaction
+- Aggregator (Stateful entities)
