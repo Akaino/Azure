@@ -26,3 +26,4 @@ Also, don't forget to remove unused resources.
 
 ###### Helpful Resources
 <a href="https://docs.microsoft.com/de-de/azure/storage/common/storage-cors-support">Cross Origin Resource Sharing (CORS) in Azure Services</a>
+<a href="https://docs.microsoft.com/de-de/azure/app-service/overview-local-cache">App Service Local Cache</a>
