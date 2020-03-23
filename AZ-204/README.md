@@ -13,6 +13,13 @@ To easily create such file make use of use
 
 Also, many (if not all) examples make use of a basic `azureConfig.json` in their root directory.
 
+###### Alternative Preparation
+You may also go ahead an make use of environment variables.
+`AZURE_TENANT_ID`
+`AZURE_SUBSCRIPTION_ID`
+`AZURE_CLIENT_ID`
+`AZURE_CLIENT_SECRET`
+
 ###### Usage
 Create `authfile.json` or edit the `azureConfig.json` where it's present.
 Compile. Hope for no erros.

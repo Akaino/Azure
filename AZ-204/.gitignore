@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+AZ-204/TEMP
+TEMP
+/TEMP
 # User-specific files
 *.rsuser
 *.suo
