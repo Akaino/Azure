@@ -6,6 +6,8 @@
 AZ-204/TEMP/
 TEMP/
 /TEMP/
+Credentials/
+/Credentials
 # User-specific files
 *.rsuser
 *.suo
