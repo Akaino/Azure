@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29230.47
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBus", "ServiceBus\ServiceBus.csproj", "{3BD4217E-FA10-4233-9A9D-5D007BF7EA79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBusReceiver", "ServiceBusReceiver\ServiceBusReceiver.csproj", "{2BF20593-BDDD-4EDA-AF7D-3A4AD60B4AC2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3BD4217E-FA10-4233-9A9D-5D007BF7EA79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BD4217E-FA10-4233-9A9D-5D007BF7EA79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BD4217E-FA10-4233-9A9D-5D007BF7EA79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BD4217E-FA10-4233-9A9D-5D007BF7EA79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BF20593-BDDD-4EDA-AF7D-3A4AD60B4AC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BF20593-BDDD-4EDA-AF7D-3A4AD60B4AC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BF20593-BDDD-4EDA-AF7D-3A4AD60B4AC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BF20593-BDDD-4EDA-AF7D-3A4AD60B4AC2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AFFD1946-B6C0-4630-8243-3E960531A11D}
+	EndGlobalSection
+EndGlobal

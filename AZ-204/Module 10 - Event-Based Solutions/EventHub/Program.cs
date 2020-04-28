@@ -3,13 +3,16 @@ using System.Text;
 using Microsoft.Azure.EventHubs;
 using System.Threading.Tasks;
 
+using Newtonsoft.Json.Linq;
+using System.IO;
+
 namespace EventHub
 {
     class Program
     {
         private static EventHubClient eventHubClient;
-        
-        private const string EventHubConnectionString = "Endpoint=sb://azuremonitorhubadn.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=3RMFLW1ufGGqkvVaJeqomLtkF+XIuNImHiy+fgcsyYg=";
+        static JObject azureConfig = JObject.Parse(File.ReadAllText("azureConfig.json"));
+        static String EventHubConnectionString = azureConfig.GetValue("EventHubConnectionString").ToString();
         private const string EventHubName = "workshophub";
         static void Main(string[] args)
         {

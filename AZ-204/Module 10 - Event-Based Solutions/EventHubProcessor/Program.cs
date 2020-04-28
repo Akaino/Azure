@@ -4,16 +4,22 @@ using System.Text;
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.EventHubs.Processor;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace EventHubProcessor
 {
     class Program
     {
-        private const string EventHubConnectionString = "Endpoint=sb://azuremonitorhubadn.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=3RMFLW1ufGGqkvVaJeqomLtkF+XIuNImHiy+fgcsyYg=";
+        static JObject azureConfig = JObject.Parse(File.ReadAllText("azureConfig.json"));
+
+        // Batch Account credentials
+        static String EventHubConnectionString = azureConfig.GetValue("EventHubConnectionString").ToString();
+        static String StorageAccountKey = azureConfig.GetValue("StorageAccountKey").ToString();
+
         private const string EventHubName = "workshophub";
         private const string StorageContainerName = "events";
         private const string StorageAccountName = "azuremonitorstore";
-        private const string StorageAccountKey = "5UPoBEqIEY1XF+x2mPKULF5l+mtACUrS/x65+DAFhvjmkCMKeV1cAc0WTBX0xi6lasDp3MAEitcAuAm1XOSadg==";
 
         private static readonly string StorageConnectionString = string.Format("DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1}", StorageAccountName, StorageAccountKey);
         static void Main(string[] args)

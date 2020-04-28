@@ -2,16 +2,22 @@
 using Microsoft.Azure.EventGrid;
 using Microsoft.Azure.EventGrid.Models;
 using System.Collections.Generic;
-
+using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace EventGrid
 {
     class Program
     {
+        static JObject azureConfig = JObject.Parse(File.ReadAllText("azureConfig.json"));
+
+        // Batch Account credentials
+        static String topicOrDomainEndpoint = azureConfig.GetValue("topicOrDomainEndpoint").ToString();
+        static String topicOrDomainKey = azureConfig.GetValue("topicOrDomainKey").ToString();
+        static String DomainTopic = "MyTopic";
         static void Main(string[] args)
         {
-            string topicOrDomainEndpoint = "https://topicOrDomainName.northeurope-1.eventgrid.azure.net/api/events";
-            string topicOrDomainKey = "<KEY>";
+            
             string topicOrDomainHostname = new Uri(topicOrDomainEndpoint).Host;
 
             TopicCredentials topicCredentials = new TopicCredentials(topicOrDomainKey);
@@ -28,7 +34,7 @@ namespace EventGrid
                     eventsList.Add(new EventGridEvent()
                     {
                         Id = Guid.NewGuid().ToString(),
-                        Topic = "<domaintopic>",
+                        Topic = DomainTopic,
                         EventType = "My.Custom.Event.Type",
                         Data = new Event() 
                         {

@@ -3,12 +3,19 @@ using Azure.Storage.Queues;
 using Azure.Storage.Queues.Models;
 using System;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace QueueStorage
 {
     class Program
     {
-        private static string connectionString = "DefaultEndpointsProtocol=https;AccountName=apistorageadn;AccountKey=f4nyMV/ACmIETqoDOPiSJOnpzMytvhV6uZCXnXxuv8bdcxTo4n2vYmyrWLEJ3tJhVGEER+CRen/Vk21GrY8dwQ==;EndpointSuffix=core.windows.net";
+
+        static JObject azureConfig = JObject.Parse(File.ReadAllText("azureConfig.json"));
+
+        // Batch Account credentials
+        static String connectionString = azureConfig.GetValue("connectionString").ToString();
+        
             
         static void Main(string[] args)
         {
