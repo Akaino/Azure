@@ -1,0 +1,3 @@
+https://docs.microsoft.com/de-de/azure/api-management/import-and-publish
+
+https://docs.microsoft.com/de-de/azure/api-management/add-api-manually
