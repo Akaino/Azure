@@ -1,7 +1,7 @@
 # Azure - Examples
 
 ###### Introduction
-As I'm not a huge fan of Microsofts MOC Labs I created this repository to have a bunch of examples to the different Modules in the AZ-203 course.
+As I'm not a huge fan of Microsofts MOC Labs I created this repository to have a bunch of examples to the different Modules in the AZ-204 course.
 It's intended for the students to have something to get started during and after the course.
 
 All examples are created for dotnet core `3.1`.
@@ -12,6 +12,13 @@ To easily create such file make use of use
 > az ad sp create-for-rbac --sdk-auth > authfile.json
 
 Also, many (if not all) examples make use of a basic `azureConfig.json` in their root directory.
+
+###### Alternative Preparation
+You may also go ahead an make use of environment variables.
+`AZURE_TENANT_ID`
+`AZURE_SUBSCRIPTION_ID`
+`AZURE_CLIENT_ID`
+`AZURE_CLIENT_SECRET`
 
 ###### Usage
 Create `authfile.json` or edit the `azureConfig.json` where it's present.
