@@ -17,9 +17,9 @@ namespace EventHubProcessor
         static String EventHubConnectionString = azureConfig.GetValue("EventHubConnectionString").ToString();
         static String StorageAccountKey = azureConfig.GetValue("StorageAccountKey").ToString();
 
-        private const string EventHubName = "workshophub";
+        private const string EventHubName = "myhub";
         private const string StorageContainerName = "events";
-        private const string StorageAccountName = "azuremonitorstore";
+        private const string StorageAccountName = "csbba8b94fd6bf1x4164xb3e";
 
         private static readonly string StorageConnectionString = string.Format("DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1}", StorageAccountName, StorageAccountKey);
         static void Main(string[] args)

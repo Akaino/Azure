@@ -13,7 +13,7 @@ namespace EventHub
         private static EventHubClient eventHubClient;
         static JObject azureConfig = JObject.Parse(File.ReadAllText("azureConfig.json"));
         static String EventHubConnectionString = azureConfig.GetValue("EventHubConnectionString").ToString();
-        private const string EventHubName = "workshophub";
+        private const string EventHubName = "myhub";
         static void Main(string[] args)
         {
             MainAsync(args).GetAwaiter().GetResult();

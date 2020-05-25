@@ -25,8 +25,8 @@ namespace Demo_01___Create_a_vm_in_netcore
             
             
 
-            var groupName = "az203_" + rng;
-            var vmName = "az203" + rng;
+            var groupName = "az204_" + rng;
+            var vmName = "az204" + rng;
             var location = "northeurope";
 
             Console.WriteLine("Creating Resource Group...");

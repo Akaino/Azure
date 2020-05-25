@@ -14,7 +14,7 @@ namespace EventGrid
         // Batch Account credentials
         static String topicOrDomainEndpoint = azureConfig.GetValue("topicOrDomainEndpoint").ToString();
         static String topicOrDomainKey = azureConfig.GetValue("topicOrDomainKey").ToString();
-        static String DomainTopic = "MyTopic";
+        static String DomainTopic = "newtopic";
         static void Main(string[] args)
         {
             
@@ -34,7 +34,7 @@ namespace EventGrid
                     eventsList.Add(new EventGridEvent()
                     {
                         Id = Guid.NewGuid().ToString(),
-                        Topic = DomainTopic,
+                        //Topic = DomainTopic,
                         EventType = "My.Custom.Event.Type",
                         Data = new Event() 
                         {

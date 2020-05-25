@@ -1,14 +1,11 @@
 # Admin User aktivieren
-az acr update --name "<acrName>" --admin-enabled true
+az acr update --name myregistrykairoth --admin-enabled true
 
 # Password abfragen
-az acr credential show --name "<acrName>" --query "passwords[0].value"
+az acr credential show --name myregistrykairoth --query "passwords[0].value"
 
 # Deploy container image
-az container create --resource-group "<group>" --name "<acr-containerName>" 
---image "<acrLoginServer>"/aci-helloworld:v1 --cpu 1 --memory 1 
---registry-username "<acrName>" --registry-password "<acrPassword>" 
---dns-name-label "<fqdn>" --ports 80
+az container create --resource-group "az204-2" --name "test" --image myregistrykairoth.azurecr.io/aci-helloworld:v1 --cpu 1 --memory 1 --registry-username myregistrykairoth --registry-password "AnBQ+6FSMLvPQeDclBa9E9dv+8vdgSgK" --dns-name-label "testkairoth" --ports 80
 
 # Container Status anzeigen
-az container show --resource-group "<groupName>" --name "<acr-containerName>" --query instanceView.state
+az container show --resource-group "az204-2" --name "test" --query instanceView.state

@@ -9,11 +9,11 @@ namespace ServiceBusReceiver
 {
     class Program
     {
-        static JObject azureConfig = JObject.Parse(File.ReadAllText("azureConfig.json"));
+        static JObject azureConfig = JObject.Parse(File.ReadAllText(@"C:\Users\Kai.Roth\Documents\Development\Azure\AZ-204\Module 11 - Develop message-based solutions\Service Bus\ServiceBus\ServiceBus\azureConfig.json"));
 
         // Batch Account credentials
-        static String ServiceBusConnectionString = azureConfig.GetValue("ServiceBusConnectionString").ToString();
-        
+        //static String ServiceBusConnectionString = azureConfig.GetValue("ServiceBusConnectionString").ToString();
+        static String ServiceBusConnectionString = "Endpoint=sb://mybusnamesspace.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=YlpTATZcGp3rk6bv18q3mjJ5mMcbjYqSG/450TY0Y0I=";
         const string QueueName = "myqueue";
         const string TopicName = "mytopic";
 

@@ -73,6 +73,7 @@ namespace QueueStorage
                 // "Process" the message
                 Console.WriteLine($"Message: {message.MessageText}");
 
+
                 // Let the service know we're finished with
                 // the message and it can be safely deleted.
                 await queueClient.DeleteMessageAsync(message.MessageId, message.PopReceipt);

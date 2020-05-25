@@ -2,7 +2,6 @@
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-  
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Net;
@@ -59,15 +58,20 @@ namespace Cosmos_DB
         */
         public async Task GetStartedDemoAsync()
         {
+
+            // Proxy?
+            var options = new CosmosClientOptions() { ConnectionMode = ConnectionMode.Gateway };
+
             // Create a new instance of the Cosmos Client
-            this.cosmosClient = new CosmosClient(cosmosUri, cosmosKey);
+            this.cosmosClient = new CosmosClient(cosmosUri, cosmosKey, options);
+
             await this.CreateDatabaseAsync();
             await this.CreateContainerAsync();
             await this.AddItemsToContainerAsync();
             await this.QueryItemsAsync();
             await this.ReplaceFamilyItemAsync();
-            await this.DeleteFamilyItemAsync();
-            await this.DeleteDatabaseAndCleanupAsync();
+            //await this.DeleteFamilyItemAsync();
+            //await this.DeleteDatabaseAndCleanupAsync();
         }
 
         /*
@@ -208,6 +212,13 @@ namespace Cosmos_DB
             FeedIterator<Family> queryResultSetIterator = this.container.GetItemQueryIterator<Family>(queryDefinition);
 
             List<Family> families = new List<Family>();
+
+//            var query = client.CreateDocumentQuery<Family>(collectionUri, options)
+            //.Where(family => family.Id == "93ea3652-d36a-487e-8e67-b4e47f111bbb")
+ //           .Where(family => family.lastName == "Leh")
+            //.Select(d => new {LastName = d.LastName, ZipCode = d.ZipCode})
+//            .AsDocumentQuery()
+
 
             while (queryResultSetIterator.HasMoreResults)
             {
