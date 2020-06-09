@@ -19,7 +19,7 @@ namespace EventHubProcessor
 
         private const string EventHubName = "myhub";
         private const string StorageContainerName = "events";
-        private const string StorageAccountName = "csbba8b94fd6bf1x4164xb3e";
+        private const string StorageAccountName = "securestorkr";
 
         private static readonly string StorageConnectionString = string.Format("DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1}", StorageAccountName, StorageAccountKey);
         static void Main(string[] args)

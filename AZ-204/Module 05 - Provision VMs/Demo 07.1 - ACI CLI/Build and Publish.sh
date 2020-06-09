@@ -17,7 +17,7 @@ az acr show --name <acrName> --query loginServer
 az acr credential show --name <acrName> --query "passwords[0].value"
 
 # Container bereitstellen
-az container create --resource-group myResourceGroup --name aci-tutorial-app --image <acrLoginServer>/aci-tutorial-app:v1 --cpu 1 --memory 1 --registry-login-server <acrLoginServer> --registry-username <acrName> --registry-password <acrPassword> --dns-name-label <aciDnsLabel> --ports 80
+az container create --resource-group AZ204 --name helloworld --image registrykr.azurecr.io/helloworld:v1 --cpu 2 --memory 4 --registry-login-server registry.azurecr.io --registry-username registrykr --registry-password 0000 --dns-name-label mydnss --ports 80
 
 # Fortschritt prüfen
 az container show --resource-group myResourceGroup --name aci-tutorial-app --query provisioningState

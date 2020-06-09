@@ -14,4 +14,4 @@ docker push myregistrykairoth.azurecr.io/aci-helloworld:v1
 echo FROM hello-world > Dockerfile
 
 # Build the image
-az acr build --image aci/helloworld:v1 --registry myregistrykairoth --file Dockerfile .
+az acr build --image aci/helloworld:v1 --registry myregistry --file Dockerfile .
