@@ -19,6 +19,7 @@ namespace BlobAccess
         {
             Console.WriteLine("Accessing Blob Storage");
             string connStr = storageConnectionString;
+            
 
             CloudStorageAccount account = CloudStorageAccount.Parse(connStr);
 
