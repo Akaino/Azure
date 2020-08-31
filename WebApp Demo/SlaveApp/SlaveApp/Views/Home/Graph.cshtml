@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewData["Title"] = "Graph";
+}
+
+<h1>Graph</h1>
+<p>User:</p>
+<p>@ViewBag.User.UserPrincipalName</p>
+<p>UserProperties:</p>
+
+<p>@ViewBag.UserProperties.AccountEnabled</p>
+<p>@ViewBag.UserProperties.City</p>
+<p>@ViewBag.UserProperties.Country</p>
+<p>@ViewBag.UserProperties.CreationType</p>
+<p>@ViewBag.UserProperties.Mail</p>
+<p>@ViewBag.UserProperties.Id</p>
+
+@foreach(var key in ViewBag.UserProperties.AdditionalData.Keys)
+{
+    <p>@key.ToString()</p>
+}
+
+
+

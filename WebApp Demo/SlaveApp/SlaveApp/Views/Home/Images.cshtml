@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewData["Title"] = "Images";
+    
+}
+
+
+<h1>Images</h1>
+@foreach(var image in ViewBag.MyList){
+    <img src="@image" alt="@image" />    
+}
+
+

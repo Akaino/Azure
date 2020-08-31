@@ -14,6 +14,7 @@ namespace ServiceBus
 
         // Batch Account credentials
         //static String ServiceBusConnectionString = azureConfig.GetValue("ServiceBusConnectionString").ToString();
+
         static String ServiceBusConnectionString = "";
         const string QueueName = "myqueue";
         const string TopicName = "mytopic";
