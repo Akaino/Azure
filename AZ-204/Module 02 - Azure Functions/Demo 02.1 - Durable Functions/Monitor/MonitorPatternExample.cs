@@ -20,8 +20,7 @@ namespace Function
         
             // start encoding
             await context.CallActivityAsync<string>("MonitorPatternExample_BeginEncode", fileName);
-        
-        
+
             // We don't want the orchestration to run infinitely
             // If the operation has not completed within 30 mins, end the orchestration
             var operationTimeoutTime = context.CurrentUtcDateTime.AddMinutes(30);

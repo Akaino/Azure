@@ -1,0 +1,5 @@
+{
+    "appService.preDeployTask": "publish-release",
+    "appService.deploySubpath": "bin\\Release\\netcoreapp3.1\\publish",
+    "appService.defaultWebAppToDeploy": "/subscriptions/e53ed9ca-aa3b-4e0e-a190-a0db32f633ae/resourceGroups/TeamsCalls/providers/Microsoft.Web/sites/adnteamscalls"
+}
