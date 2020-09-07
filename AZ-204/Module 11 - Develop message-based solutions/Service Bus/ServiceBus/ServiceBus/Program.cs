@@ -14,7 +14,12 @@ namespace ServiceBus
 
         // Batch Account credentials
         //static String ServiceBusConnectionString = azureConfig.GetValue("ServiceBusConnectionString").ToString();
+<<<<<<< HEAD
         static String ServiceBusConnectionString = "Endpoint=sb://servicebusnskr.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=U6ltMfbkcv+BLV3WaP83UQv8vtFE1pvNqTL+lVnmAds=";
+=======
+
+        static String ServiceBusConnectionString = "";
+>>>>>>> 8bf587441b5b7691247fee29f4cdb9c1706ac9df
         const string QueueName = "myqueue";
         const string TopicName = "mytopic";
 
