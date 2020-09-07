@@ -28,7 +28,7 @@ namespace BlobAccess
 
             CloudBlobContainer container = client.
                 GetContainerReference(date.Millisecond + "myblobcontainer");
-
+            
             var exists = await container.CreateIfNotExistsAsync();
 
             CloudBlockBlob blob = container.

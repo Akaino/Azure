@@ -34,9 +34,9 @@ namespace AzureCacheForRedis3._1
             Console.WriteLine("\nCache command  : " + cacheCommand + " or StringGet()");
             Console.WriteLine("Cache response : " + cache.StringGet("System:Message").ToString());
 
-            cacheCommand = "SET System:Message \"AZ203 MOC Kurs!!\"";
+            cacheCommand = "SET System:Message \"AZ204 MOC Kurs!!\"";
             Console.WriteLine("\nCache command  : " + cacheCommand + " or StringSet()");
-            Console.WriteLine("Cache response : " + cache.StringSet("System:Message", "AZ203 MOC Kurs!!").ToString());
+            Console.WriteLine("Cache response : " + cache.StringSet("System:Message", "AZ204 MOC Kurs!!").ToString());
 
             // Demonstrate "SET Message" executed as expected...
             cacheCommand = "GET System:Message";

@@ -53,7 +53,7 @@ namespace QueueStorage
                 // Display the message
                 Console.WriteLine($"Message: {peekedMessage.MessageText}");
             }
-
+            Console.ReadLine();
             Console.WriteLine("\nUpdating the third message in the queue...");
 
             // Update a message using the saved receipt from sending the message

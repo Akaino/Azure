@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Azure.Cosmos;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
+using TeamsWebhook.Models;
 
 namespace TeamsWebhook {
 
@@ -27,8 +27,18 @@ namespace TeamsWebhook {
     public async Task AddItemToContainerAsync(string httpResult)
         {
             var CallRecordModel = JsonConvert.DeserializeObject<CallRecordModel>(httpResult);
-            var callRecordModelResponse = await this.container.ReadItemStreamAsync(CallRecordModel.Id, new PartitionKey(CallRecordModel.Id));
-
+            //var requestoptions = new ItemRequestOptions();
+            //var callRecordModelResponse = await this.container.ReadItemAsync<ResponseMessage>(CallRecordModel.Id, new PartitionKey(CallRecordModel.Id));
+            try
+            {
+                var item = await this.container.UpsertItemAsync(CallRecordModel, new PartitionKey(CallRecordModel.Id));
+                //Console.WriteLine("Created item in database with id: {0} Operation consumed {1} RUs.\n", item.Resource.Id, item.RequestCharge);
+            }
+            catch (System.Exception)
+            {
+                Console.WriteLine("Something went wrong");
+            }
+            /*
             if (callRecordModelResponse.StatusCode == HttpStatusCode.NotFound)
             {
                 // Create an item in the container representing the Andersen family. Note we provide the value of the partition key for this item, which is "Andersen"
@@ -52,6 +62,7 @@ namespace TeamsWebhook {
                 //ItemResponse<CallRecordModel> item = await this.container.ReadItemAsync<CallRecordModel>(CallRecordModel.Id, new PartitionKey(CallRecordModel.Id));
                 Console.WriteLine("Item in database with id: {0} already exists\n", item.Resource.Id, ". Upserted item.");
             }
+            */
         } // AddItemToContainerAsync(string httpResult)
     } // class
 } // namespace

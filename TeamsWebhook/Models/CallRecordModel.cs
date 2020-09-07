@@ -2,7 +2,7 @@ using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace TeamsWebhook
+namespace TeamsWebhook.Models
 {
 
     public class CallRecordModels

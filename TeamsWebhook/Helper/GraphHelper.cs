@@ -18,6 +18,7 @@ namespace TeamsWebhook {
         {
             IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
             configurationBuilder.AddJsonFile("appsettings.json");
+            configurationBuilder.AddEnvironmentVariables();
             Configuration = configurationBuilder.Build();
         }
 

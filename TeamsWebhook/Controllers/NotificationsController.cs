@@ -43,16 +43,18 @@ namespace TeamsWebhook.Controllers
         if (cosmos == null) {
             cosmos = new CosmosHelper(config);
         }
-        if (this.telemetryClient == null) {
-            TelemetryConfiguration configuration = TelemetryConfiguration.CreateDefault();
-            this.telemetryClient = new TelemetryClient(configuration);
-        }
+        
+        TelemetryConfiguration telemetryConfig = TelemetryConfiguration.CreateDefault();
+        telemetryConfig.InstrumentationKey = Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"];
+        this.telemetryClient = new TelemetryClient(telemetryConfig);
+        //this.telemetryClient.InstrumentationKey = Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"];
+        
     }
 
     [HttpGet]
     public ActionResult<string> Get()
     {
-        telemetryClient.TrackPageView("Notifications");
+        this.telemetryClient.TrackPageView("Notifications");
         if (graphClient == null) {
             graphClient = GraphHelper.Instance.GetGraphClient();
         }
@@ -78,7 +80,7 @@ namespace TeamsWebhook.Controllers
         {
             subscriptionTimer = new Timer(CheckSubscriptions, null, 5000, 15000);
         }
-        var html = $"<html><p>Subscribed.</p><p>Id: {newSubscription.Id}</p><p>Expiration: {newSubscription.ExpirationDateTime}</p></html>";
+        var html = $"Subscribed. Id: {newSubscription.Id} Expiration: {newSubscription.ExpirationDateTime}";
         return $"{html}";
     } // Get()
 
@@ -89,7 +91,7 @@ namespace TeamsWebhook.Controllers
         {
             //Console.WriteLine($"Received Token: '{validationToken}'");
             //_logger.LogWarning($"Received Token: '{validationToken}'");
-            telemetryClient.TrackEvent("Validation",new Dictionary<string, string>{{"ValidationToken",$"{validationToken}"}});
+            this.telemetryClient.TrackEvent("Validation",new Dictionary<string, string>{{"ValidationToken",$"{validationToken}"}});
             return Ok(validationToken);
         }
 
@@ -110,8 +112,8 @@ namespace TeamsWebhook.Controllers
 
             foreach(var notification in notifications.Items)
             {
-                //_logger.LogWarning($"Received notification: '{notification.Resource}', {notification.ResourceData?.Id}");
-                telemetryClient.TrackEvent("Received notification", new Dictionary<string, string>{{$"{notification.Resource}",$"{notification.ResourceData?.Id}"}});
+                _logger.LogWarning($"Received notification: '{notification.Resource}', {notification.ResourceData?.Id}");
+                this.telemetryClient.TrackEvent("Received notification", new Dictionary<string, string>{{$"{notification.Resource}",$"{notification.ResourceData?.Id}"}});
                 // Calls abrufen
                 string callRecordStr = notification.ResourceData?.Id.ToString();
                 
@@ -123,7 +125,15 @@ namespace TeamsWebhook.Controllers
                 var jsonString = con.Content.ReadAsStringAsync().Result;
                 
                 // Update CosmosDB with notifications
-                cosmos.AddItemToContainerAsync(jsonString).GetAwaiter().GetResult();
+                try
+                {
+                    cosmos.AddItemToContainerAsync(jsonString).GetAwaiter().GetResult();
+                }
+                catch (Exception e)
+                {
+                   var dict = new Dictionary<string, string>{{$"message",$"{e.Message}"},{$"Stacktrace",$"{e.StackTrace}"}};
+                   telemetryClient.TrackEvent("EXCEPTION THROWN", dict);
+                }
 
             } // foreach
         }
@@ -135,8 +145,10 @@ namespace TeamsWebhook.Controllers
     private void CheckSubscriptions(Object stateInfo)
     {
         AutoResetEvent autoEvent = (AutoResetEvent)stateInfo;
-
-        telemetryClient.TrackEvent("CheckSubscription", new Dictionary<string, string>{{$"stateInfo",$"{stateInfo.ToString()}"}});
+        if (stateInfo != null) {
+            var dict = new Dictionary<string, string>{{$"stateInfo",$"{stateInfo.ToString()}"}};
+            this.telemetryClient.TrackEvent("CheckSubscription", dict);
+        }
         // _logger.LogWarning($"Checking subscriptions {DateTime.Now.ToString("h:mm:ss.fff")}");
         // _logger.LogWarning($"Current subscription count {Subscriptions.Count()}");
 
@@ -165,7 +177,7 @@ namespace TeamsWebhook.Controllers
             .Request()
             .UpdateAsync(subscription2).Result;
 
-        telemetryClient.TrackEvent("Renewed Subscription", new Dictionary<string, string>{
+        this.telemetryClient.TrackEvent("Renewed Subscription", new Dictionary<string, string>{
                 {$"Subscription",$"{subscription.Id}"},
                 {"New Expiration","{subscription2.ExpirationDateTime}"}
             });
