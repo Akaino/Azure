@@ -1,0 +1,52 @@
+Trainer Handbook Page 61 ff.
+
+Git init newRepo
+cd newRepo
+
+touch myFile.txt
+code myFile.txt
+>>> Änderungen vornehmen
+
+touch myFile2.txt
+code myFile2.txt
+>>> Änderungen vornehmen
+
+cd ..
+code newRepo
+
+<<< Links git bash, rechts vsCode
+
+git add .
+git commit -m "initial commit"
+
+>>> Änderungen vornehmen
+
+git status
+git add .
+git commit -m "Changes"
+
+git branch newFeature
+git checkout/switch newFeature
+git status
+
+touch newFile3.txt
+>>> Änderungen vornehmen an verschiedenen Dateien
+git status
+git add .
+git commit -m "new feature added"
+git log
+
+git checkout/switch master
+git status
+git log
+
+>>> Änderungen vornehmen
+
+git add .
+git commit -m "Anpassungen"
+
+git merge newFeature
+
+>>> resolve conflicts
+
+git log
