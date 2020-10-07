@@ -8,6 +8,8 @@ This is a central repository for different Azure topics such as
   - Azure App Service
   - Azure API Management
   - Azure ...
+- AZ-400
+  - TBA
 - MS-600
   - Teams Apps
   - Sharepoint Add-(O)Ins
