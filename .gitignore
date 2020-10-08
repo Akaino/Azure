@@ -16,7 +16,7 @@
 # Mono auto generated files
 mono_crash.*
 
-/AZ-203*
+/AZ-203
 
 # Build results
 [Dd]ebug/
