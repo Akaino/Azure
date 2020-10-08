@@ -1,0 +1,16 @@
+﻿@using System.Security.Principal
+@using System.Security.Claims;
+
+@{
+    ViewData["Title"] = "Requesting Claims";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>To see this page a user has to be logged in. We are asking for additional Claims to be shown here.</p>
+
+@if (User.Identity.IsAuthenticated)
+{
+    var identity = User.Identity as ClaimsIdentity;
+    string preferred_username = identity.Claims.FirstOrDefault( c => c.Type == "preferred_username")?.Value;
+    
+}
