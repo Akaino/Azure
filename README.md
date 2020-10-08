@@ -2,12 +2,12 @@
 
 ###### Introduction
 This is a central repository for different Azure topics such as
-- AZ-203
-  - Azure Function
-  - Azure Table Storage
-  - Azure App Service
+- AZ-204
+  - Azure Functions
+  - Azure Storage
+  - Azure App Services
   - Azure API Management
-  - Azure ...
+  - Azure Authentication
 - AZ-400
   - TBA
 - MS-600
