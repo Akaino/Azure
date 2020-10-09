@@ -1,21 +1,24 @@
 # A simple guide to start with Git
 
+! To run the `touch` command on Windows, use the Git Bash !
+
 ## Working with a local repository
 This command creates a new local repository with the name 'newRepo'
 > Git init newRepo
 
 We can now switch into the newly created directory
-cd newRepo
+> cd newRepo
 
 Create a new file to demonstrate how Git works
 `touch myFile.txt` (alternatively create via context menu)
 Open the file in your preferred editor
 > code myFile.txt
 
-Now edit the file. Make a few changes. Write somethin interesting.
+Now edit the file. Make a few changes. Write something interesting.
 
 Create another file and repeat the process.
 > touch myFile2.txt
+
 > code myFile2.txt
 
 Edit this file, too.
@@ -97,6 +100,7 @@ Our working tree is clean (no changes happened).
 Now change one of the files and run these commands so we have a bunch of commits to check in our history:
 
 > git add .
+
 > git commit -m "Changes"
 
 ### Branching to keep the master
@@ -177,7 +181,7 @@ We now created something like this:
 ```
 
 Our master timeline did not stop while we were creating our feature.
-While this is neat and convinient, at some point we'd like to join them back together. To create a master branch which contains our feature.
+While this is neat and convenient, at some point we'd like to join them back together. To create a master branch which contains our feature.
 We'll have to `merge` our feature into the master branch.
 
 Doing this is simple.
