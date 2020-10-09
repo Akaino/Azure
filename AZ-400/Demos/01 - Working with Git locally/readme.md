@@ -17,8 +17,7 @@ Open the file in your preferred editor
 Now edit the file. Make a few changes. Write something interesting.
 
 Create another file and repeat the process.
-> touch myFile2.txt
-
+> touch myFile2.txt  
 > code myFile2.txt
 
 Edit this file, too.
@@ -99,8 +98,7 @@ Our working tree is clean (no changes happened).
 
 Now change one of the files and run these commands so we have a bunch of commits to check in our history:
 
-> git add .
-
+> git add .  
 > git commit -m "Changes"
 
 ### Branching to keep the master
