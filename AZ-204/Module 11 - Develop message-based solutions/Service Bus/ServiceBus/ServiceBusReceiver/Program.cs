@@ -12,8 +12,8 @@ namespace ServiceBusReceiver
         static JObject azureConfig = JObject.Parse(File.ReadAllText(@"C:\Users\Kai.Roth\Documents\Development\Azure\AZ-204\Module 11 - Develop message-based solutions\Service Bus\ServiceBus\ServiceBus\azureConfig.json"));
 
         // Batch Account credentials
-        //static String ServiceBusConnectionString = azureConfig.GetValue("ServiceBusConnectionString").ToString();
-        static String ServiceBusConnectionString = "Endpoint=sb://servicebusnskr.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=U6ltMfbkcv+BLV3WaP83UQv8vtFE1pvNqTL+lVnmAds=";
+        static String ServiceBusConnectionString = azureConfig.GetValue("ServiceBusConnectionString").ToString();
+        //static String ServiceBusConnectionString = "Endpoint=sb://servicebusnskr.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=U6ltMfbkcv+BLV3WaP83UQv8vtFE1pvNqTL+lVnmAds=";
         const string QueueName = "myqueue";
         const string TopicName = "mytopic";
 

@@ -12,6 +12,7 @@ namespace TableStorage
 {
     class Program
     {
+        
         static JObject azureConfig = JObject.Parse(File.ReadAllText("azureConfig.json"));
 
         // Batch Account credentials

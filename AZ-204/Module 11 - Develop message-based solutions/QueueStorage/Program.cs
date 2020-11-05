@@ -16,7 +16,6 @@ namespace QueueStorage
         // Batch Account credentials
         static String connectionString = azureConfig.GetValue("connectionString").ToString();
         
-            
         static void Main(string[] args)
         {
             AsyncMain(args).GetAwaiter().GetResult();
@@ -37,6 +36,7 @@ namespace QueueStorage
             Console.WriteLine("\nAdding messages to the queue...");
 
             // Send several messages to the queue
+            
             await queueClient.SendMessageAsync("First message");
             await queueClient.SendMessageAsync("Second message");
 
@@ -53,6 +53,7 @@ namespace QueueStorage
                 // Display the message
                 Console.WriteLine($"Message: {peekedMessage.MessageText}");
             }
+            Console.WriteLine("Press enter to update messages in the queue");
             Console.ReadLine();
             Console.WriteLine("\nUpdating the third message in the queue...");
 

@@ -30,6 +30,8 @@ namespace OAuth.Controllers
         {
             return View();
         }
+
+
         [Authorize("GroupMembership")]
         public IActionResult Groupmembership()
         {

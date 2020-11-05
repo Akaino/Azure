@@ -12,5 +12,4 @@
 {
     var identity = User.Identity as ClaimsIdentity;
     string preferred_username = identity.Claims.FirstOrDefault( c => c.Type == "preferred_username")?.Value;
-    
 }
