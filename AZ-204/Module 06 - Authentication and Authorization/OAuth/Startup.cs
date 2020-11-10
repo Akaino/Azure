@@ -37,7 +37,7 @@ namespace OAuth
             });
 
             services.AddAuthorization(options => {
-                options.AddPolicy("GroupMembership", policyBuilder => policyBuilder.RequireClaim("groups", "8bd07272-7bfb-4907-8e5b-d0da1c3b4d90"));
+                options.AddPolicy("GroupMembership", policyBuilder => policyBuilder.RequireClaim("groups", Configuration["GroupID"]));
             });
 
             services.AddControllersWithViews(options =>
