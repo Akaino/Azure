@@ -19,7 +19,7 @@ namespace BlobDemo.Net
     private static async Task ProcessAsync()
     {
     // Copy the connection string from the portal in the variable below.
-      string storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=demoblobstor;AccountKey=EoDUPBjFjppLflvnaUEeaZ88ItRnQ8OKUDT9d3GcySGwd1Ay0cpLjHU7kyaUB1i5z1+329pznpy+DBItb4a2/g==;EndpointSuffix=core.windows.net";
+      string storageConnectionString = "STORAGECONNECTIONSTRING";
       // Check whether the connection string can be parsed. 
       CloudStorageAccount storageAccount;
       if (CloudStorageAccount.TryParse(storageConnectionString, out storageAccount))
