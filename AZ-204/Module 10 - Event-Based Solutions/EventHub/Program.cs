@@ -13,7 +13,7 @@ namespace EventHub
         private static EventHubClient eventHubClient;
         static JObject azureConfig = JObject.Parse(File.ReadAllText("azureConfig.json"));
         static String EventHubConnectionString = azureConfig.GetValue("EventHubConnectionString").ToString();
-        private const string EventHubName = "myeventhub";
+        private const string EventHubName = "myhubtp";
         static void Main(string[] args)
         
         {
@@ -50,7 +50,7 @@ namespace EventHub
                     
                     Console.WriteLine($"Sending message: {message}");
                     var data = new EventData(Encoding.UTF8.GetBytes(message));
-                    
+
                     await eventHubClient.SendAsync(data);
                 }
                 catch (Exception exception)

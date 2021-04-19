@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>Cosmos_DB</RootNamespace>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>AzureCacheForRedis</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.17.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Stackexchange.Redis" Version="2.2.4" />
   </ItemGroup>
 
 </Project>

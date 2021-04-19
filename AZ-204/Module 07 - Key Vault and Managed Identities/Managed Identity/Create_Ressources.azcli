@@ -1,0 +1,19 @@
+#Variables
+$Location="northeurope"
+$RGName="ManagedIdentGroupTP"
+$VaultName="ManagedIdentKVTP"
+$WebAppName="ManagedIdentWebAppTP"
+$PlanName=$WebAppName+"-Plan"
+#ResourceGroup
+az group create -l $Location -n $RGName 
+#KeyVault
+az keyvault create -l $Location -n $VaultName --resource-group $RGName 
+az keyvault secret set --name supergeheim --vault-name $VaultName --value "AZ204 Kurs"
+#WebApp-Plan
+az appservice plan create -g $RGName -n $PlanName --sku FREE 
+#WebApp
+az webapp create -g $RGName -p $PlanName -n $WebAppName
+
+#Remove RG 
+#az group delete -n $RGName --no-wait -y
+

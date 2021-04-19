@@ -1,0 +1,7 @@
+$Registry="MyACRTP"
+
+# Images als Liste ausgeben
+az acr repository list --name $Registry --output table
+
+# Tags des Repositories ausgeben
+az acr repository show-tags --name $Registry --repository aci-helloworld --output table
