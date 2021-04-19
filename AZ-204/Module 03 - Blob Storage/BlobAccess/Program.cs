@@ -1,10 +1,9 @@
 ﻿using System;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.Azure.Storage;
+using Microsoft.Azure.Storage.Blob;
 using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Threading.Tasks;
-using System.Threading;
 
 namespace BlobAccess
 {
@@ -19,7 +18,6 @@ namespace BlobAccess
         {
             Console.WriteLine("Accessing Blob Storage");
             string connStr = storageConnectionString;
-            
 
             CloudStorageAccount account = CloudStorageAccount.Parse(connStr);
 
@@ -33,7 +31,7 @@ namespace BlobAccess
             var exists = await container.CreateIfNotExistsAsync();
 
             CloudBlockBlob blob = container.
-                GetBlockBlobReference(date.Millisecond + "myblob");
+                GetBlockBlobReference(date.Millisecond + "myblob.png");
 
             await blob.UploadFromFileAsync("fileToUpload.png");
             return 0;
