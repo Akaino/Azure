@@ -82,6 +82,7 @@ namespace Cosmos_DB
             // Create a new database
             this.database = await this.cosmosClient.CreateDatabaseIfNotExistsAsync(databaseId);
             //this.database = await this.cosmosClient.CreateDatabaseIfNotExistsAsync(databaseId, throughput: 10000);
+      
             Console.WriteLine("Created Database: {0}\n", this.database.Id);
         }
 
@@ -93,6 +94,7 @@ namespace Cosmos_DB
         {
             // Create a new container
             this.container = await this.database.CreateContainerIfNotExistsAsync(containerId, "/LastName");
+   
             Console.WriteLine("Created Container: {0}\n", this.container.Id);
         }
 
@@ -142,6 +144,7 @@ namespace Cosmos_DB
             else
             {
                 ItemResponse<Family> item = await this.container.ReadItemAsync<Family>(andersenFamily.Id, new PartitionKey(andersenFamily.LastName));
+      
                 Console.WriteLine("Item in database with id: {0} already exists\n", item.Resource.Id);
             }
 
@@ -195,6 +198,7 @@ namespace Cosmos_DB
             else
             {
                 ItemResponse<Family> item = await this.container.ReadItemAsync<Family>(wakefieldFamily.Id, new PartitionKey(wakefieldFamily.LastName));
+        
                 Console.WriteLine("Item in database with id: {0} already exists\n", item.Resource.Id);
             }
         }
@@ -223,9 +227,11 @@ namespace Cosmos_DB
             while (queryResultSetIterator.HasMoreResults)
             {
                 FeedResponse<Family> currentResultSet = await queryResultSetIterator.ReadNextAsync();
+               
                 foreach (Family family in currentResultSet)
                 {
                     families.Add(family);
+                   
                     Console.WriteLine("\tRead {0}\n", family);
                 }
             }
@@ -246,6 +252,7 @@ namespace Cosmos_DB
 
             // replace the item with the updated content
             wakefieldFamilyResponse = await this.container.ReplaceItemAsync<Family>(itemBody, itemBody.Id, new PartitionKey(itemBody.LastName));
+           
             Console.WriteLine("Updated Family [{0},{1}]\n. Body is now: {2}\n", itemBody.LastName, itemBody.Id, wakefieldFamilyResponse.Resource);
         }
 
@@ -259,6 +266,7 @@ namespace Cosmos_DB
 
             // Delete an item. Note we must provide the partition key value and id of the item to delete
             ItemResponse<Family> wakefieldFamilyResponse = await this.container.DeleteItemAsync<Family>(familyId, new PartitionKey(partitionKeyValue));
+            
             Console.WriteLine("Deleted Family [{0},{1}]\n", partitionKeyValue, familyId);
         }
 
@@ -275,7 +283,5 @@ namespace Cosmos_DB
             //Dispose of CosmosClient
             this.cosmosClient.Dispose();
         }
-
     }
-
 }
