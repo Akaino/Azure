@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.Azure.Storage;
-using Microsoft.Azure.Storage.Blob;
+using Azure.Storage;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 
 namespace BlobDemo.Net
 {
@@ -13,95 +15,171 @@ namespace BlobDemo.Net
       Console.WriteLine("Azure Blob Storage Demo\n");
       // Run the examples asynchronously, wait for the results before proceeding
       ProcessAsync().GetAwaiter().GetResult();
-      Console.WriteLine("Press enter to exit the sample application.");
-      Console.ReadLine();    
     }
+
     private static async Task ProcessAsync()
     {
-    // Copy the connection string from the portal in the variable below.
-      string storageConnectionString = "STORAGECONNECTIONSTRING";
-      // Check whether the connection string can be parsed. 
-      CloudStorageAccount storageAccount;
-      if (CloudStorageAccount.TryParse(storageConnectionString, out storageAccount))
+      // Copy the connection string from the portal in the variable below.
+      string storageConnectionString = "CONNECTIONSTRING";
+
+      try{
+        Console.WriteLine("Press enter to create Container and File.");Console.ReadLine();
+        
+        string blob = await CreateContainer(storageConnectionString);
+        
+        Console.WriteLine("Press enter to DownloadFile.");Console.ReadLine();
+        
+        await DownloadBlob(storageConnectionString, blob);
+        
+        Console.WriteLine("Press enter to read Infos.");Console.ReadLine();
+        
+        await ReadInfos(storageConnectionString);
+        
+        Console.WriteLine("Press enter to delete container.");Console.ReadLine();
+      }
+      finally{
+        await DeleteContainer(storageConnectionString);
+
+        Console.WriteLine("Press enter to exit the sample application.");Console.ReadLine();
+      }
+    }
+
+    private static async Task ReadInfos(string connString)
+    {
+      BlobServiceClient storageAccount;
+
+      try
       {
-        // Run the example code if the connection string is valid. 
-        Console.WriteLine("Valid connection string.\r\n");
-        // EXAMPLE CODE STARTS BELOW HERE
-        //Uri bloburi = new Uri("https://demoblobstor.blob.core.windows.net/");
-        CloudBlobClient cloudBlobClient = storageAccount.CreateCloudBlobClient();
-        // Create a container called 'quickstartblobs' and
-        // append a GUID value to it to make the name unique.
-        CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference("demoblobs" + Guid.NewGuid().ToString());
-        await cloudBlobContainer.CreateAsync();
-        Console.WriteLine("A container has been created, note the 'Public access level' in the portal.");
-        Console.WriteLine("Press 'Enter' to continue.");
-        Console.ReadLine();
+        storageAccount = new BlobServiceClient(connString);
+        AccountInfo accountInfo = await storageAccount.GetAccountInfoAsync();
 
-        // Create a file in your local MyDocuments folder to upload to a blob.
-        string localPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        string localFileName = "BlobDemo_" + Guid.NewGuid().ToString() + ".txt";
-        string sourceFile = Path.Combine(localPath, localFileName);
-        // Write text to the file.
-        File.WriteAllText(sourceFile, "Hello, World!");
-        Console.WriteLine("\r\nTemp file = {0}", sourceFile);
-        Console.WriteLine("Uploading to Blob storage as blob '{0}'", localFileName);
-        // Get a reference to the blob address, then upload the file to the blob.
-        // Use the value of localFileName for the blob name.
-        CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(localFileName);
-        await cloudBlockBlob.UploadFromFileAsync(sourceFile);
-        Console.WriteLine("\r\nVerify the creation of the blob and upload in the portal.");
-        Console.WriteLine("Press 'Enter' to continue.");
-        Console.ReadLine();
+        Console.WriteLine("AccountKind: " + accountInfo.AccountKind);
+        Console.WriteLine("AccountSku: " + accountInfo.SkuName);
 
-        // List the blobs in the container.
-        Console.WriteLine("List blobs in container.");
-        BlobContinuationToken blobContinuationToken = null;
-        do
+        if (accountInfo.SkuName == SkuName.StandardRagrs)
         {
-          var results = await cloudBlobContainer.ListBlobsSegmentedAsync(null, blobContinuationToken);
-          // Get the value of the continuation token returned by the listing call.
-          blobContinuationToken = results.ContinuationToken;
-          foreach (IListBlobItem item in results.Results)
-          {
-            Console.WriteLine(item.Uri);
-          }
-        } while (blobContinuationToken != null); // Loop while the continuation token is not null.
-        Console.WriteLine("\r\nCompare the list in the console to the portal.");
-        Console.WriteLine("Press 'Enter' to continue.");
-        Console.ReadLine();
-
-        // Download the blob to a local file, using the reference created earlier.
-        // Append the string "_DOWNLOADED" before the .txt extension so that you
-        // can see both files in MyDocuments.
-        string destinationFile = sourceFile.Replace(".txt", "_DOWNLOADED.txt");
-        Console.WriteLine("Downloading blob to {0}", destinationFile);
-        await cloudBlockBlob.DownloadToFileAsync(destinationFile, FileMode.Create);
-        Console.WriteLine("\r\nLocate the local file to verify it was downloaded.");
-        Console.WriteLine("Press 'Enter' to continue.");
-        Console.ReadLine();
-
-        // Clean up the resources created by the app
-        Console.WriteLine("Press the 'Enter' key to delete the example files and example container.");
-        Console.ReadLine();
-        // Clean up resources. This includes the container and the two temp files.
-        Console.WriteLine("Deleting the container");
-        if (cloudBlobContainer != null)
-        {
-          await cloudBlobContainer.DeleteIfExistsAsync();
+          BlobServiceStatistics stats = await storageAccount.GetStatisticsAsync();
+          Console.WriteLine("Statistics (GeoReplication): " + stats.GeoReplication);
         }
-        Console.WriteLine("Deleting the source, and downloaded files\r\n");
-        File.Delete(sourceFile);
-        File.Delete(destinationFile);
 
-        // EXAMPLE CODE ENDS ABOVE HERE
+        var containers = storageAccount.GetBlobContainers();
+
+        foreach (var container in containers)
+        {
+          Console.WriteLine("checking Container: " + container.Name);
+
+          if (container.IsDeleted ?? true)
+          {
+            BlobContainerClient containerClient = new BlobContainerClient(connString, container.Name);
+            BlobContainerProperties containerProperties = await containerClient.GetPropertiesAsync();
+
+            Console.WriteLine("Container has LegalHold? " + containerProperties.HasLegalHold);
+            Console.WriteLine("Container is Immutable? " + containerProperties.HasImmutabilityPolicy);
+
+            await foreach (BlobItem blob in containerClient.GetBlobsAsync())
+            {
+              Console.WriteLine("Blob: " + blob.Name);
+              Console.WriteLine("     Type Of:" + blob.Properties.BlobType);
+              Console.WriteLine(blob.Properties.ContentLength > 1024 ?
+                                       "     Size (KB):" + (blob.Properties.ContentLength / 1024) :
+                                       "     Size (byte):" + blob.Properties.ContentLength);
+            }
+
+          }
+          else
+          {
+            Console.WriteLine("    >>>> Is Deleted!" + container.Properties.RemainingRetentionDays);
+          }
+        }
       }
-      else
+      catch (Exception e)
       {
-        // Otherwise, let the user know that they need to define the environment variable.
-        Console.WriteLine("A valid connection string has not been defined in the storageConnectionString variable.");
-        Console.WriteLine("Press enter to exit the application.");
-        Console.ReadLine();
+        Console.WriteLine("OH SNAP!: " + e.Message);
       }
+    }
+   
+    private static async Task<string> CreateContainer(string connString)
+    {
+      string _fileName = "";
+
+      try
+      {
+        BlobContainerClient containerClient = new BlobContainerClient(connString, "my-container");
+        await containerClient.CreateIfNotExistsAsync();
+
+        try
+        {
+          var (fileName, filePath) = CreateSampleFile();
+          _fileName = fileName;
+
+          BlobClient blobClient = containerClient.GetBlobClient(fileName);
+          await blobClient.UploadAsync(filePath);
+        }
+        catch (Exception e)
+        {
+          Console.WriteLine("Blob Exception: " + e.Message);
+        }
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine("OH SNAP!: " + e.Message);
+      }
+
+      return _fileName;
+    }
+
+    private static async Task DownloadBlob(string connString, string blobName)
+    {
+      // Download the blob to a local file, using the reference created earlier.
+      // Append the string "_DOWNLOADED" before the .txt extension so that you
+      // can see both files in MyDocuments.
+      string destinationFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "BlobDemo_DOWNLOADED.txt");
+      Console.WriteLine("Downloading blob to {0}", destinationFile);
+
+      try
+      {
+        BlobContainerClient containerClient = new BlobContainerClient(connString, "my-container");
+        await containerClient.CreateIfNotExistsAsync();
+
+        try
+        {
+          BlobClient blobClient = containerClient.GetBlobClient(blobName);
+          await blobClient.DownloadToAsync(destinationFile);
+        }
+        catch (Exception e)
+        {
+          Console.WriteLine("Blob Exception: " + e.Message);
+        }
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine("OH SNAP!: " + e.Message);
+      }
+    }
+
+    private static async Task DeleteContainer(string connString)
+    {
+      try
+      {
+        BlobContainerClient containerClient = new BlobContainerClient(connString, "my-container");
+        await containerClient.DeleteIfExistsAsync();
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine("OH SNAP!: " + e.Message);
+      }
+    }
+    
+    private static (string, string) CreateSampleFile()
+    {
+      string localPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+      string localFileName = "BlobDemo_" + Guid.NewGuid().ToString() + ".txt";
+      string sourceFile = Path.Combine(localPath, localFileName);
+      // Write text to the file.
+      File.WriteAllText(sourceFile, "Hello, World!");
+      Console.WriteLine("\r\nTemp file = {0}", sourceFile);
+
+      return (localFileName, sourceFile);
     }
   }
 }
