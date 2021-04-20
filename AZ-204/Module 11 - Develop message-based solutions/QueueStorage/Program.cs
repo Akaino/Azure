@@ -52,6 +52,7 @@ namespace QueueStorage
                 // Display the message
                 Console.WriteLine($"Message: {peekedMessage.MessageText}");
             }
+
             Console.WriteLine("Press enter to update messages in the queue");
             Console.ReadLine();
             Console.WriteLine("\nUpdating the third message in the queue...");
@@ -72,7 +73,6 @@ namespace QueueStorage
             {
                 // "Process" the message
                 Console.WriteLine($"Message: {message.MessageText}");
-
 
                 // Let the service know we're finished with
                 // the message and it can be safely deleted.
