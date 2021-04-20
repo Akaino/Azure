@@ -1,0 +1,30 @@
+$RGName="appconfigtp"
+$Location="northeurope"
+$ConfigName="myappconfigurationtp"
+$FeatureName="answerRequests"
+#Create Resource Group
+az group create -l $Location -n $RGName
+
+# Create the Azure AppConfig Service resource and query the hostName
+$appConfigHostname=$(az appconfig create -n $ConfigName -l $Location -g $RGName --query endpoint --sku free -o tsv )
+
+#Get the ConnectionString (ReadOnly)
+$appConfigConnectionStringRead=$(az appconfig credential list -g $RGName -n $ConfigName --query "[?name=='Primary Read Only'] .connectionString" -o tsv)
+
+#Get the ConnectionString (ReadWrite)
+#$appConfigConnectionString=$(az appconfig credential list -g $RGName -n $ConfigName --query "[?name=='Primary'] .connectionString" -o tsv)
+
+#Create Config
+az appconfig kv set -n $ConfigName --key "App1:Key" --value "ValueForWebApp1" -y
+az appconfig kv set -n $ConfigName --key "App1:Refreshing" --value "OldValue" -y
+az appconfig kv set -n $ConfigName --key "App2:Key" --value "ValueForWebApp2" -y
+ 
+#Create Feature
+az appconfig feature set -n $ConfigName --feature $FeatureName -y
+
+#Feature Enable/Disable
+#az appconfig feature enable -n $ConfigName --feature $FeatureName -y
+#az appconfig feature disable -n $ConfigName --feature $FeatureName -y
+
+#When testing locally
+$Env:ConnectionString=$appConfigConnectionStringRead
