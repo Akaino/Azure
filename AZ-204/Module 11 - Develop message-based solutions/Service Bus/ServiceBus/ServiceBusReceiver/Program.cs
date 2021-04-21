@@ -2,24 +2,24 @@
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.ServiceBus;
+using Azure.Messaging.ServiceBus;
 using Newtonsoft.Json.Linq;
 using System.IO;
 namespace ServiceBusReceiver
 {
     class Program
     {
-        static JObject azureConfig = JObject.Parse(File.ReadAllText(@"C:\Users\Kai.Roth\Documents\Development\Azure\AZ-204\Module 11 - Develop message-based solutions\Service Bus\ServiceBus\ServiceBus\azureConfig.json"));
+        static JObject azureConfig = JObject.Parse(File.ReadAllText("azureConfig.json"));
 
         // Batch Account credentials
         static String ServiceBusConnectionString = azureConfig.GetValue("ServiceBusConnectionString").ToString();
         //static String ServiceBusConnectionString = "Endpoint=sb://servicebusnskr.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=U6ltMfbkcv+BLV3WaP83UQv8vtFE1pvNqTL+lVnmAds=";
         const string QueueName = "myqueue";
         const string TopicName = "mytopic";
+        const string SubscriptionName = "eventviewer";
 
-        static IQueueClient queueClient;
-        static ITopicClient topicClient;
-        static ISubscriptionClient subscriptionClient;
+        static ServiceBusClient serviceBusClient;
+        static ServiceBusProcessor serviceBusProcessor;
 
         static void Main(string[] args)
         {
@@ -28,26 +28,40 @@ namespace ServiceBusReceiver
 
         static async Task MainAsync()
         {
-            topicClient = new TopicClient(ServiceBusConnectionString, QueueName);
-            const string SubscriptionName = "eventviewer";
-            subscriptionClient = new SubscriptionClient(ServiceBusConnectionString, TopicName, SubscriptionName);
+            serviceBusClient = new ServiceBusClient(ServiceBusConnectionString);
+            serviceBusProcessor = serviceBusClient.CreateProcessor(TopicName, SubscriptionName, RegisterOptions());
+            //serviceBusProcessor = serviceBusClient.CreateProcessor(QueueName, RegisterOptions());
+            serviceBusProcessor.ProcessErrorAsync += ExceptionReceivedHandler;
+            serviceBusProcessor.ProcessMessageAsync += ProcessMessagesAsync;
 
+            
+        
             Console.WriteLine("======================================================");
             Console.WriteLine("Press ENTER key to exit after receiving all the messages.");
             Console.WriteLine("======================================================");
 
             // Register the queue message handler and receive messages in a loop
-            RegisterOnMessageHandlerAndReceiveMessages();
-
-            Console.ReadKey();
-
-            await subscriptionClient.CloseAsync();
+            try
+            {
+                serviceBusProcessor.StartProcessingAsync();
+            }
+            catch (ServiceBusException e)
+            {
+                System.Console.WriteLine("OH SNAP!: "+e.Message);
+            }
+            
+            
+            Console.ReadLine();
+            await serviceBusProcessor.StopProcessingAsync();
+            
+            await serviceBusProcessor.CloseAsync();
+            await serviceBusClient.DisposeAsync();
         }
 
-        static void RegisterOnMessageHandlerAndReceiveMessages()
+        static ServiceBusProcessorOptions RegisterOptions()
         {
             // Configure the message handler options in terms of exception handling, number of concurrent messages to deliver, etc.
-            var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
+            var messageHandlerOptions = new ServiceBusProcessorOptions
             {
                 // Maximum number of concurrent calls to the callback ProcessMessagesAsync(), set to 1 for simplicity.
                 // Set it according to how many messages the application wants to process in parallel.
@@ -55,36 +69,32 @@ namespace ServiceBusReceiver
 
                 // Indicates whether the message pump should automatically complete the messages after returning from user callback.
                 // False below indicates the complete operation is handled by the user callback as in ProcessMessagesAsync().
-                AutoComplete = false
+                AutoCompleteMessages = false, 
+                //ReceiveMode = ServiceBusReceiveMode.ReceiveAndDelete
             };
 
-            // Register the function that processes messages.
-            subscriptionClient.RegisterMessageHandler(ProcessMessagesAsync, messageHandlerOptions);
+            return messageHandlerOptions;
         }
 
-        static async Task ProcessMessagesAsync(Message message, CancellationToken token)
+        static async Task ProcessMessagesAsync(ProcessMessageEventArgs args)
         {
             // Process the message.
-            Console.WriteLine($"Received message: SequenceNumber:{message.SystemProperties.SequenceNumber} Body:{Encoding.UTF8.GetString(message.Body)}");
+            Console.WriteLine($"Received message: SequenceNumber:{args.Message.SequenceNumber} Body:{Encoding.UTF8.GetString(args.Message.Body)}");
 
             // Complete the message so that it is not received again.
             // This can be done only if the queue Client is created in ReceiveMode.PeekLock mode (which is the default).
-            await subscriptionClient.CompleteAsync(message.SystemProperties.LockToken);
-
-            // Note: Use the cancellationToken passed as necessary to determine if the queueClient has already been closed.
-            // If queueClient has already been closed, you can choose to not call CompleteAsync() or AbandonAsync() etc.
-            // to avoid unnecessary exceptions.
+            await args.CompleteMessageAsync(args.Message);
         }
 
         // Use this handler to examine the exceptions received on the message pump.
-        static Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
+        static Task ExceptionReceivedHandler(ProcessErrorEventArgs args)
         {
-            Console.WriteLine($"Message handler encountered an exception {exceptionReceivedEventArgs.Exception}.");
-            var context = exceptionReceivedEventArgs.ExceptionReceivedContext;
+            Console.WriteLine($"Message handler encountered an exception {args.Exception.Message}");
+            var context = args.ErrorSource;
             Console.WriteLine("Exception context for troubleshooting:");
-            Console.WriteLine($"- Endpoint: {context.Endpoint}");
-            Console.WriteLine($"- Entity Path: {context.EntityPath}");
-            Console.WriteLine($"- Executing Action: {context.Action}");
+            Console.WriteLine($"- Endpoint: {args.ErrorSource}");
+            Console.WriteLine($"- Entity Path: {args.EntityPath}");
+            Console.WriteLine($"- FQDN: {args.FullyQualifiedNamespace}");
             return Task.CompletedTask;
         }
     }

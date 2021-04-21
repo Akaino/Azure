@@ -1,0 +1,14 @@
+$RGName="ACRGroupTP"
+$Registry="MyACRTP"
+$ContName="test"
+# Admin User aktivieren
+az acr update --name $Registry --admin-enabled true
+
+# Password abfragen
+az acr credential show --name $Registry --query "passwords[0].value"
+
+# Deploy container image
+az container create -g $RGName -n $ContName --image $Registry".azurecr.io/aci-helloworld:v1" --cpu 1 --memory 1 --registry-username $Registry --registry-password "G1tuh3lPAWjE9mnBRJXb9xhtN7pB+27u" --dns-name-label "dns-label" --ports 80
+
+# Container Status anzeigen
+az container show -g $RGName -n $ContName --query instanceView.state

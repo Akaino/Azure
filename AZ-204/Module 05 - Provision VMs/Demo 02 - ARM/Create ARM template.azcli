@@ -1,0 +1,6 @@
+# Resorce Group
+az group create --name "MyRG" --location "northeurope"
+# Deploy from template
+az deployment group create --name "MyDeployment" --resource-group "MyRG" --template-file "azuredeploy.json"
+# Show storage account
+az storage account show --resource-group "MyRG" --name "store3jkl4nrgpg4bg"
