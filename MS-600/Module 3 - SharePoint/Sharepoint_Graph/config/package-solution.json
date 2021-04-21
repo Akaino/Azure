@@ -1,0 +1,21 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "graph-sp-client-side-solution",
+    "id": "2a1d9273-3d53-4622-8aca-c1b9b839abb9",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "webApiPermissionRequests":
+    [
+      {
+        "resource" : "Microsoft Graph",
+        "scope" : "Mail.Read"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/graph-sp.sppkg"
+  }
+}
