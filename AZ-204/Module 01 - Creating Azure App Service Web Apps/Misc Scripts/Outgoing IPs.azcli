@@ -1,0 +1,5 @@
+# find Outbound IP address
+az webapp show --resource-group <group_name> --name <app_name> --query outboundIpAddresses --output tsv
+
+# find all possible IP addresses (regardless of tier)
+az webapp show --resource-group <group_name> --name <app_name> --query possibleOutboundIpAddresses --output tsv

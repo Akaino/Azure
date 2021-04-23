@@ -1,0 +1,14 @@
+#dotnet
+az webapp config set --linux-fx-version "DOTNETCORE|3.1" --resource-group <groupname> --name <appname>
+
+#PHP
+az webapp config set --php-version 7.0 --resource-group <groupname> --name <appname>
+
+#Python
+az webapp config set --python-version 3.4 --resource-group <groupname> --name <appname>
+
+#Java
+az webapp config set --resource-group <groupname> --name <appname> --java-version 1.8 --java-container Tomcat --java-container-version 9.0 
+
+#NodeJS
+az webapp config appsettings set --resource-group <groupname> --name <appname> --settings WEBSITE_NODE_DEFAULT_VERSION=8.9.3
