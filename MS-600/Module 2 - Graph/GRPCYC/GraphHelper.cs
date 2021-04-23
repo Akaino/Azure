@@ -78,7 +78,7 @@ namespace GRPCYC
       }
       catch (ServiceException ex)
       {
-        Console.WriteLine($"Error getting groups: {ex.Message}");
+        Console.WriteLine($"Error getting members: {ex.Message}");
       }
 
       return members;

@@ -6,54 +6,50 @@ using Microsoft.Graph;
 
 using System.Net.Http;
 using System.Net.Http.Headers;
-
+using Newtonsoft.Json.Linq;
 
 namespace SELORD
 {
-    class Program
+  class Program
+  {
+    static JObject azureConfig = JObject.Parse(System.IO.File.ReadAllText("appSettings.json"));
+    static String clientID = azureConfig.GetValue("CLIENT_ID").ToString();
+    static String authority = azureConfig.GetValue("AUTHORITY").ToString();
+    static String secret = azureConfig.GetValue("SECRET").ToString();
+
+    //Permissions: Mail.Read, User.Read
+    private static List<string> scopes = new List<string>();
+
+    static void Main(string[] args)
     {
-        
-        private static string clientID = "e433aa6a-8116-4c18-82bf-031768fe9ef9";
-        private static string tenant = "5d8b74a9-cfa0-4f65-9d4f-56b92787a8c3";
-        private static string clientSecret = "0DcY.L_0q.Js0mVq4~eO3ocko.ZcVnqhh5";
-        private static string instance = $"https://login.microsoftonline.com/{tenant}/v2.0";
-        
-        //Permissions: Mail.Read, User.Read
-        private static List<string> scopes = new List<string>();
+      scopes.Add("https://graph.microsoft.com/.default");
 
-        static void Main(string[] args)
-        {
-            scopes.Add("https://graph.microsoft.com/.default");
+      var ccs = ConfidentialClientApplicationBuilder.Create(clientID)
+                                                    .WithAuthority(authority)
+                                                    .WithClientSecret(secret)
+                                                    .Build();
 
-            var ccs = ConfidentialClientApplicationBuilder.Create(clientID)
-                                                          .WithAuthority(instance)
-                                                          .WithClientSecret(clientSecret)
-                                                          .Build();
-            
-            GraphServiceClient graphServiceClient = new GraphServiceClient(new DelegateAuthenticationProvider(async (requestMessage) => {
-                    var authResult = await ccs
-                        .AcquireTokenForClient(scopes)
-                        .ExecuteAsync();
+      GraphServiceClient graphServiceClient = new GraphServiceClient(new DelegateAuthenticationProvider(async (requestMessage) =>
+      {
+        var authResult = await ccs.AcquireTokenForClient(scopes).ExecuteAsync();
 
-                    requestMessage.Headers.Authorization = 
-                        new AuthenticationHeaderValue("Bearer", authResult.AccessToken);
-                })
-            );
-            
-            var httpClient = new HttpClient();
-            var graphClient = new GraphServiceClient(httpClient);
-            
-            //var users = graphServiceClient.Users.Request().GetAsync().GetAwaiter().GetResult();
-            var users = graphServiceClient.Users.Request().Filter("startswith(displayName, 'T')").GetAsync().GetAwaiter().GetResult(); 
-            //var users = graphServiceClient.Users.Request().Select(u => new {u.DisplayName, u.City}).GetAsync().GetAwaiter().GetResult();
-            //var users = graphServiceClient.Users["admin@devtobi.onmicrosoft.com"].Messages.Request().GetAsync().GetAwaiter().GetResult();
-            
-            foreach(var user in users)
-            { 
-                Console.WriteLine(user.DisplayName);
-                //Console.WriteLine(user.ReceivedDateTime + " - " + user.Subject);
-            }
-        }
+        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authResult.AccessToken);
+      }));
+
+      var httpClient = new HttpClient();
+      var graphClient = new GraphServiceClient(httpClient);
+
+      //var users = graphServiceClient.Users.Request().GetAsync().GetAwaiter().GetResult();
+      var users = graphServiceClient.Users.Request().Filter("startswith(displayName, 'T')").GetAsync().GetAwaiter().GetResult();
+      //var users = graphServiceClient.Users.Request().Select(u => new {u.DisplayName, u.City}).GetAsync().GetAwaiter().GetResult();
+      //var users = graphServiceClient.Users["admin@devtobi.onmicrosoft.com"].Messages.Request().GetAsync().GetAwaiter().GetResult();
+
+      foreach (var user in users)
+      {
+        Console.WriteLine(user.DisplayName);
+        //Console.WriteLine(user.ReceivedDateTime + " - " + user.Subject);
+      }
     }
+  }
 }
 

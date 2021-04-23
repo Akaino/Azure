@@ -171,6 +171,7 @@ namespace TEATEM
         //Unfortunately, this always returns 'null', so we have to do it more complicated >:(
         //newTeam = await graphClient.Teams.Request().AddAsync(team);
 
+        //StackOverflow: 64667655
         BaseRequest request = (BaseRequest)graphClient.Teams.Request();
         request.ContentType = "application/json";
         request.Method = "POST";
@@ -202,7 +203,7 @@ namespace TEATEM
 
             // according to the docs, we should wait > 30 secs between calls
             // https://docs.microsoft.com/en-us/graph/api/resources/teamsasyncoperation?view=graph-rest-1.0
-            delayInMilliseconds = 10_000;
+            delayInMilliseconds = 30_000;
           }
 
           //we can now work with the Id
@@ -319,7 +320,7 @@ namespace TEATEM
       try
       {
         //await graphClient.Teams[_id].Request().DeleteAsync();
-        await graphClient.Groups[_id].Request().DeleteAsync(); //alternativ ?
+        await graphClient.Groups[_id].Request().DeleteAsync(); //more stable
         //await graphClient.Teams[_id].Archive(null).Request().PostAsync(); //only archive (Read-only)
       }
       catch (ServiceException ex)
@@ -361,7 +362,7 @@ namespace TEATEM
       }
       catch (ServiceException ex)
       {
-        Console.WriteLine($"Error creating group: {ex.Message}");
+        Console.WriteLine($"Error listing channels/tabs: {ex.Message}");
       }
 
       return dictResult;
@@ -405,7 +406,7 @@ namespace TEATEM
       }
       catch (ServiceException ex)
       {
-        Console.WriteLine($"Error creating Tab: {ex.Message}");
+        Console.WriteLine($"Error adding Channel/Tab: {ex.Message}");
       }
     }
   }
