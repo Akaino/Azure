@@ -6,5 +6,6 @@
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.8.1" />
     <PackageReference Include="Azure.Storage.Common" Version="12.7.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 </Project>

@@ -5,11 +5,17 @@ using System.Threading.Tasks;
 using Azure.Storage;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Newtonsoft.Json.Linq;
 
 namespace BlobDemo.Net
 {
   class Program
   {
+    static JObject azureConfig = JObject.Parse(File.ReadAllText("azureConfig.json"));
+
+    // Storage Account credentials
+    static String storageConnectionString = azureConfig.GetValue("StorageConnectionString").ToString();
+
     static void Main(string[] args)
     {
       Console.WriteLine("Azure Blob Storage Demo\n");
@@ -19,9 +25,6 @@ namespace BlobDemo.Net
 
     private static async Task ProcessAsync()
     {
-      // Copy the connection string from the portal in the variable below.
-      string storageConnectionString = "CONNECTIONSTRING";
-
       try{
         Console.WriteLine("Press enter to create Container and File.");Console.ReadLine();
         
@@ -181,5 +184,7 @@ namespace BlobDemo.Net
 
       return (localFileName, sourceFile);
     }
+  
+    //TODO: Generate SAS Policy 
   }
 }
