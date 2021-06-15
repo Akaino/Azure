@@ -17,7 +17,6 @@ namespace Cosmos_DB
         static String cosmosUri = azureConfig.GetValue("CosmosUri").ToString();
         static String cosmosKey = azureConfig.GetValue("CosmosKeyPrimary").ToString();
         
-
         // The Cosmos client instance
         private CosmosClient cosmosClient;
 
@@ -70,8 +69,8 @@ namespace Cosmos_DB
             await this.AddItemsToContainerAsync();
             await this.QueryItemsAsync();
             await this.ReplaceFamilyItemAsync();
-            //await this.DeleteFamilyItemAsync();
-            //await this.DeleteDatabaseAndCleanupAsync();
+            await this.DeleteFamilyItemAsync();
+            await this.DeleteDatabaseAndCleanupAsync();
         }
 
         /*
@@ -227,7 +226,7 @@ namespace Cosmos_DB
             while (queryResultSetIterator.HasMoreResults)
             {
                 FeedResponse<Family> currentResultSet = await queryResultSetIterator.ReadNextAsync();
-               
+
                 foreach (Family family in currentResultSet)
                 {
                     families.Add(family);
@@ -267,7 +266,7 @@ namespace Cosmos_DB
             // Delete an item. Note we must provide the partition key value and id of the item to delete
             ItemResponse<Family> wakefieldFamilyResponse = await this.container.DeleteItemAsync<Family>(familyId, new PartitionKey(partitionKeyValue));
             
-            Console.WriteLine("Deleted Family [{0},{1}]\n", partitionKeyValue, familyId);
+            Console.WriteLine("Deleted Family [{0},{1}] {2}\n", partitionKeyValue, familyId, wakefieldFamilyResponse.RequestCharge);
         }
 
         /*

@@ -76,6 +76,8 @@ namespace BlobDemo.Net
             BlobContainerClient containerClient = new BlobContainerClient(connString, container.Name);
             BlobContainerProperties containerProperties = await containerClient.GetPropertiesAsync();
 
+            //TODO: Generate Demo SASPolicy
+            GenerateSASPolicy(containerClient);
             Console.WriteLine("Container has LegalHold? " + containerProperties.HasLegalHold);
             Console.WriteLine("Container is Immutable? " + containerProperties.HasImmutabilityPolicy);
 
@@ -185,6 +187,8 @@ namespace BlobDemo.Net
       return (localFileName, sourceFile);
     }
   
-    //TODO: Generate SAS Policy 
+    private static async void GenerateSASPolicy(BlobContainerClient _client){
+      
+    }
   }
 }

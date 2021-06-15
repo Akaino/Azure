@@ -1,3 +1,6 @@
 {
-    "StorageConnectionString" : ""
+    "KeyVaultURL": "",
+    "AADTenantID": "",
+    "AADAppRegistrationID": "",
+    "AADAppRegistrationSecret" : ""
 }
