@@ -17,3 +17,13 @@ az webapp create -g $RGName -p $PlanName -n $WebAppName
 #Remove RG 
 #az group delete -n $RGName --no-wait -y
 
+# Soft deleted KeyVaults?
+# Get-AzKeyVault -InRemovedState
+
+# Remove it
+# Remove-AzKeyVault -VaultName $VaultName -InRemovedState -Location $Location
+
+# or
+
+# Recover it
+# Undo-AzKeyVaultRemoval -VaultName $VaultName -ResourceGroupName ContosoRG -Location $Location
