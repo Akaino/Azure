@@ -23,6 +23,7 @@ azureConfig.json
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 .vscode
+appsettings.development.json
 
 # Mono auto generated files
 mono_crash.*
