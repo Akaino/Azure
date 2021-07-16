@@ -24,6 +24,9 @@ namespace AppConfiguration
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+            
+            // #AppConfiguration
+            services.AddAzureAppConfiguration();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +49,9 @@ namespace AppConfiguration
             app.UseRouting();
 
             app.UseAuthorization();
+            
+            // #AppConfiguration
+            app.UseAzureAppConfiguration();
 
             app.UseEndpoints(endpoints =>
             {

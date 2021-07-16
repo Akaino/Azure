@@ -1,10 +1,26 @@
 ﻿@page
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
 }
+<!--  #AppConfiguration -->
+<!--
+  Search for #AppConfiguration to find all required settings
+  -->
+<style>
+    body {
+        background-color: @Configuration["CSS:Settings:BackgroundColor"]
+    }
+    h1 {
+        color: @Configuration["CSS:Settings:FontColor"];
+        font-size: @Configuration["CSS:Settings:FontSize"]px;
+    }
+</style>
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>Value FontSize: @Configuration["CSS:Settings:FontSize"]</a>px.</p>
 </div>
