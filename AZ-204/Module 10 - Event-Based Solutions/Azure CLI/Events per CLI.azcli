@@ -1,19 +1,25 @@
 $RGName="Az204Events"
 $TopicName="az204topic"
 $RANDOM=19411984161
+
 az group create -n $RGName -l northeurope
+
 # Create Event Grid
 az eventgrid topic create --name $TopicName -l northeurope -g $RGName
+
 # Query Topic Endpoint
 $endpoint=$(az eventgrid topic show --name $TopicName -g $RGName --query "endpoint" --output tsv)
 echo $endpoint
+
 # Query Topic SAS Key
 $key=$(az eventgrid topic key list --name $TopicName -g $RGName --query "key1" --output tsv)
 echo $key
+
 # create custom Event Object
 $event="[ {'id': '$RANDOM', 'eventType': 'recordInserted', 'subject': 'myapp/vehicles/motorcycles', 'eventTime': '2017-06-26T18:41:00.9584103Z', 'data':{ 'make': 'Ducati', 'model': 'Monster'},'dataVersion': '1.0'} ]"
+
 # send with curl
 curl -X POST -H "aeg-sas-key: $key" -d "$event" $endpoint
 
 # Remove ressources
-# az group delete --name $RGName --no-wait -y
+az group delete --name $RGName --no-wait -y

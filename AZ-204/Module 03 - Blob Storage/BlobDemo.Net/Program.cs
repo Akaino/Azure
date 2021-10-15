@@ -5,11 +5,17 @@ using System.Threading.Tasks;
 using Azure.Storage;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Newtonsoft.Json.Linq;
 
 namespace BlobDemo.Net
 {
   class Program
   {
+    static JObject azureConfig = JObject.Parse(File.ReadAllText("azureConfig.json"));
+
+    // Storage Account credentials
+    static String storageConnectionString = azureConfig.GetValue("StorageConnectionString").ToString();
+
     static void Main(string[] args)
     {
       Console.WriteLine("Azure Blob Storage Demo\n");
@@ -19,9 +25,6 @@ namespace BlobDemo.Net
 
     private static async Task ProcessAsync()
     {
-      // Copy the connection string from the portal in the variable below.
-      string storageConnectionString = "CONNECTIONSTRING";
-
       try{
         Console.WriteLine("Press enter to create Container and File.");Console.ReadLine();
         
@@ -73,6 +76,8 @@ namespace BlobDemo.Net
             BlobContainerClient containerClient = new BlobContainerClient(connString, container.Name);
             BlobContainerProperties containerProperties = await containerClient.GetPropertiesAsync();
 
+            //TODO: Generate Demo SASPolicy
+            GenerateSASPolicy(containerClient);
             Console.WriteLine("Container has LegalHold? " + containerProperties.HasLegalHold);
             Console.WriteLine("Container is Immutable? " + containerProperties.HasImmutabilityPolicy);
 
@@ -180,6 +185,10 @@ namespace BlobDemo.Net
       Console.WriteLine("\r\nTemp file = {0}", sourceFile);
 
       return (localFileName, sourceFile);
+    }
+  
+    private static async void GenerateSASPolicy(BlobContainerClient _client){
+      
     }
   }
 }

@@ -1,0 +1,17 @@
+az cdn profile list
+
+az cdn profile list --resource-group ExampleGroup
+
+az cdn profile create --name DemoProfile --resource-group ExampleGroup –sku Standard_Akamai
+
+#Create CDN Endpoint:
+az cdn endpoint create --name ContosoEndpoint --origin www.contoso.com --profile-name DemoProfile --resource-group ExampleGroup
+
+#Connect Domain with Endpoint:
+az cdn custom-domain create --name FilesDomain --hostname files.contoso.com --endpoint-name ContosoEndpoint --profile-name DemoProfile --resource-group ExampleGroup
+
+#Purge assets from an endpoint:
+az cdn endpoint purge --content-paths '/css/*' '/js/app.js' --name ContosoEndpoint --profile-name DemoProfile --resource-group ExampleGroup
+
+#Preload assets into an endpoint:
+az cdn custom-domain create --name FilesDomain --hostname files.contoso.com --endpoint-name ContosoEndpoint --profile-name DemoProfile --resource-group ExampleGroup

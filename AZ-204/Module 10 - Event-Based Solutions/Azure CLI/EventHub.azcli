@@ -1,0 +1,8 @@
+# create a resource group
+az group create --name <resource group name> --location eastus
+
+# create an Event Hubs namespace
+az eventhubs namespace create --name <Event Hubs namespace> --resource-group <resource group name> -l <region, for example: East US>
+
+# create an Event Hub
+az eventhubs eventhub create --name <event hub name> --resource-group <resource group name> --namespace-name <Event Hubs namespace>

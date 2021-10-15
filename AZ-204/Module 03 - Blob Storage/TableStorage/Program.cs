@@ -35,8 +35,10 @@ namespace TableStorage
       CloudTable table = GetTableAsync().GetAwaiter().GetResult();
 
       Console.WriteLine(InsertAllTheThings(table).GetAwaiter().GetResult());
+      
+      Console.ReadLine();
       // Delete Table
-      //DeleteTableAsync().GetAwaiter().GetResult();
+      DeleteTableAsync().GetAwaiter().GetResult();
     }
 
     // Creates the table if it doesn't already exist

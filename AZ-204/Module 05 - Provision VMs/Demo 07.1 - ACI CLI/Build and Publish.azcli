@@ -1,5 +1,6 @@
 $RGName="ACRGroupTP"
 $Registry="MyACRTP"
+
 # Build des Containers
 docker build ./aci-helloworld -t aci-tutorial-app
 
@@ -13,14 +14,13 @@ docker run –d -p 8080:80 aci-tutorial-app
 docker container ls -a
 
 # Namen des Loginservers abfragen
-az acr show --name $ACRName --query loginServer
+az acr show --name $Registry --query loginServer
 
 # ACR Password abfragen
-az acr credential show --name $ACRName --query "passwords[0].value"
+az acr credential show --name $Registry --query "passwords[0].value"
 
 # Container bereitstellen
-az container create --resource-group AZ204 --name helloworld --image $ACRName".azurecr.io/helloworld:v1" --cpu 2 --memory 4 --registry-login-server registry.azurecr.io --registry-username registrykr --registry-password 0000 --dns-name-label mydnss --ports 80
-
+az container create --resource-group $RGName --name helloworld --image $Registry".azurecr.io/helloworld:v1" --cpu 2 --memory 4 --registry-login-server registry.azurecr.io --registry-username registrykr --registry-password 0000 --dns-name-label mydnss --ports 80
 
 # Fortschritt prüfen
 az container show --resource-group $RGName --name aci-tutorial-app --query provisioningState

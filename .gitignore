@@ -15,6 +15,7 @@
 /bin*
 # Mono auto generated files
 mono_crash.*
+appsettings.json
 
 /AZ-203
 
